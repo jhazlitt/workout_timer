@@ -24,7 +24,6 @@ import sqlite3
 import urllib
 import time
 import os
-#from Tkinter import *
 
 def runCamera(cameraName):
 	# Get camera values from database
@@ -112,55 +111,14 @@ def runCamera(cameraName):
 			centerY = (minY + maxY) / 2
 			cv2.rectangle(frame,(centerX,centerY),(centerX,centerY),(255,000,255),2)
 			cv2.rectangle(frame,(minX,minY),(maxX,maxY),(255,000,255),2)
-		cv2.rectangle(fgmask,(5,5),(50,50),(255,000,255),2)
 			# Play a sound to alert the user of motion detected
 			#if not mute:
 			#	os.system("aplay beep.wav")
 
-			# Record movement time of occurrence in log
-			#if (motionDetectedTimestamp != time.asctime(time.localtime())):
-			#	motionDetectedTimestamp = time.asctime(time.localtime())
-			#	logTimestamp()
-	
-		# Put text over video frame
-		# Put a timestamp on the video frame
-		#font = cv2.FONT_HERSHEY_SIMPLEX
-		#cv2.putText(frame,str(time.asctime(time.localtime())),(0,25), font, 1, (0,0,0), 7)
-		#cv2.putText(frame,str(time.asctime(time.localtime())),(0,25), font, 1, (255,255,255), 2)
-		# Add MUTE text if the program is muted
-		#if mute:
-		#	cv2.putText(frame,"MUTE",(555,475), font, 1, (0,0,255), 4)
-
-		# Show the frame, and write it to the .avi file
+		cv2.rectangle(fgmask,(5,5),(50,50),(255,000,255),2)
 		cv2.imshow('Video',fgmask)
-		#out.write(frame)
-
-		# Find how long the routine has been running for
-		#endTime = time.time() 
-		#elapsedTime = endTime - startTime
-
-		# Save the video after a specified number of seconds
-		#if elapsedTime >= 60:
-		#	out.release()
-			
-			# If there was motion detected during the recording, move on to the next video number.  Otherwise write over this video
-			# If there are more than a specified number of videos, the count is set back to 1 so they can all be written over
-		#	if (videoNumber == 150) and (motionDetected == True):
-		#		motionDetected = False
-		#		videoNumber = 1
-		#	elif motionDetected == True:
-		#		motionDetected = False
-		#		videoNumber += 1
-
-	#		out = getOutputFile(fileSaveDirectory, videoNumber, fourcc); 
-	#		startTime = time.time()
 	cap.release()
-	#out.release()
 	cv2.destroyWindow('Video')
-
-def getOutputFile(fileSaveDirectory, videoNumber, fourcc):
-	outputFile = cv2.VideoWriter(str(fileSaveDirectory) + str(videoNumber) + '.avi',fourcc, 12, (640,480))
-	return outputFile
 
 def logTimestamp():
 	queryText = 'INSERT INTO log (timestamp) VALUES ("' + time.asctime(time.localtime()) + '");'
@@ -177,16 +135,6 @@ def retrieveFromDatabase(value, camera):
 		value = value[3:len(value)-3]
 	return value
 
-def retrieveDirectoryFromDB():
-	# Get value from database
-	queryText = 'SELECT directory FROM save_directory;'
-	result = c.execute(queryText)
-	# Strip extra characters from the query result
-	for value in result:
-		value = str(value)
-		value = value[3:len(value)-3]
-	return value
-	
 def moveCamera(password, ip, port, direction):
 	direction = str(direction)
 	moveURL = "http://admin:" + password + "@" + ip + ":" + port + "/decoder_control.cgi?command=" + direction + ""
