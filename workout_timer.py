@@ -109,6 +109,34 @@ def runCamera(cameraName):
 			# Draw a target around the motion detected
 			centerX = (minX + maxX) / 2
 			centerY = (minY + maxY) / 2
+			area = (maxX - minX) * (maxY - minY)
+			if (area < 100000):
+				if (centerX < 213):
+					if (centerY < 160):
+						moveCamera(password, ip, port, 90)
+					elif ((centerY >= 160) and (centerY < 320)):
+						moveCamera(password, ip, port, 4)
+					elif ((centerY >= 320) and (centerY <= 480)):
+						moveCamera(password, ip, port, 92)
+				elif ((centerX >= 213) and (centerX < 426)):
+					if (centerY < 160):
+						moveCamera(password, ip, port, 0)
+					elif ((centerY >= 320) and (centerY <= 480)):
+						moveCamera(password, ip, port, 2)
+				elif ((centerX >= 426) and (centerX <= 640)):
+					if (centerY < 160):
+						moveCamera(password, ip, port, 91)
+					elif ((centerY >= 160) and (centerY < 320)):
+						moveCamera(password, ip, port, 6)
+					elif ((centerY >= 320) and (centerY <= 480)):
+						moveCamera(password, ip, port, 93)
+				# Stop any camera movement
+				moveCamera(password, ip, port, 1)
+
+				
+			print area
+			print centerX
+			print centerY
 			cv2.rectangle(frame,(centerX,centerY),(centerX,centerY),(255,000,255),2)
 			cv2.rectangle(frame,(minX,minY),(maxX,maxY),(255,000,255),2)
 			# Play a sound to alert the user of motion detected
@@ -116,7 +144,7 @@ def runCamera(cameraName):
 			#	os.system("aplay beep.wav")
 
 		cv2.rectangle(fgmask,(5,5),(50,50),(255,000,255),2)
-		cv2.imshow('Video',fgmask)
+		cv2.imshow('Video',frame)
 	cap.release()
 	cv2.destroyWindow('Video')
 
