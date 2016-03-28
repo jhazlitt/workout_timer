@@ -88,16 +88,20 @@ def runCamera(cameraName):
 
 		# If there are no contours an error will be thrown.  If there are contours:
 		if len(contours) != 0:
+			contourCount = len(contours)
 			motionDetectedFrameCount += 1
-			#motionDetected = True
 			cnt = contours[0]
 			x,y,w,h = cv2.boundingRect(cnt)
 			minX = x
 			minY = y
 			maxX = x + w
 			maxY = y + h
+			totalX = 0
+			totalY = 0
 			for contour in contours:
 				x,y,w,h = cv2.boundingRect(contour)
+				totalX = totalX + x
+				totalY = totalY + y
 				if x < minX:
 					minX = x
 				elif y < minY:
@@ -106,52 +110,71 @@ def runCamera(cameraName):
 					maxX = (x + w)
 				elif (y + h) > maxY:
 					maxY = (y + h)
-			# Draw a target around the motion detected
+			# Find the average X and Y coordinates of all contours
+			averageX = (totalX / contourCount)
+			averageY = (totalY / contourCount)
+			# Find the center of the bounding rectangle of the contours
 			centerX = (minX + maxX) / 2
 			centerY = (minY + maxY) / 2
+			# Find the area of the bounding rectangle
 			area = (maxX - minX) * (maxY - minY)
+			# When the camera moves, the motion may be picked up.  In that case the motion should be ignored.  Usually this causes a large bounding rectangle with an area > 100000 pixels
 			if (area < 100000):
-				if (centerX < 213):
-					if (centerY < 160):
+#				if (centerX < 213):
+#					if (centerY < 160):
+#						moveCamera(password, ip, port, 90)
+#					elif ((centerY >= 160) and (centerY < 320)):
+#						moveCamera(password, ip, port, 4)
+#					elif ((centerY >= 320) and (centerY <= 480)):
+#						moveCamera(password, ip, port, 92)
+#				elif ((centerX >= 213) and (centerX < 426)):
+#					if (centerY < 160):
+#						moveCamera(password, ip, port, 0)
+#					elif ((centerY >= 320) and (centerY <= 480)):
+#						moveCamera(password, ip, port, 2)
+#				elif ((centerX >= 426) and (centerX <= 640)):
+#					if (centerY < 160):
+#						moveCamera(password, ip, port, 91)
+#					elif ((centerY >= 160) and (centerY < 320)):
+#						moveCamera(password, ip, port, 6)
+#					elif ((centerY >= 320) and (centerY <= 480)):
+#						moveCamera(password, ip, port, 93)
+				if (averageX < 213):
+					if (averageY < 160):
 						moveCamera(password, ip, port, 90)
-					elif ((centerY >= 160) and (centerY < 320)):
+					elif ((averageY >= 160) and (averageY < 320)):
 						moveCamera(password, ip, port, 4)
-					elif ((centerY >= 320) and (centerY <= 480)):
+					elif ((averageY >= 320) and (averageY <= 480)):
 						moveCamera(password, ip, port, 92)
-				elif ((centerX >= 213) and (centerX < 426)):
-					if (centerY < 160):
+				elif ((averageX >= 213) and (averageX < 426)):
+					if (averageY < 160):
 						moveCamera(password, ip, port, 0)
-					elif ((centerY >= 320) and (centerY <= 480)):
+					elif ((averageY >= 320) and (averageY <= 480)):
 						moveCamera(password, ip, port, 2)
-				elif ((centerX >= 426) and (centerX <= 640)):
-					if (centerY < 160):
+				elif ((averageX >= 426) and (averageX <= 640)):
+					if (averageY < 160):
 						moveCamera(password, ip, port, 91)
-					elif ((centerY >= 160) and (centerY < 320)):
+					elif ((averageY >= 160) and (averageY < 320)):
 						moveCamera(password, ip, port, 6)
-					elif ((centerY >= 320) and (centerY <= 480)):
+					elif ((averageY >= 320) and (averageY <= 480)):
 						moveCamera(password, ip, port, 93)
 				# Stop any camera movement
 				moveCamera(password, ip, port, 1)
 
-				
-			print area
-			print centerX
-			print centerY
+			# Draw the average of the contours in yellow
+			cv2.rectangle(frame,(averageX,averageY),(averageX,averageY),(000,255,255),10)
+			# Draw the center of the bounding rectangle 
 			cv2.rectangle(frame,(centerX,centerY),(centerX,centerY),(255,000,255),2)
+			# Draw the bounding rectangle
 			cv2.rectangle(frame,(minX,minY),(maxX,maxY),(255,000,255),2)
 			# Play a sound to alert the user of motion detected
 			#if not mute:
 			#	os.system("aplay beep.wav")
 
-		cv2.rectangle(fgmask,(5,5),(50,50),(255,000,255),2)
+		#cv2.rectangle(fgmask,(5,5),(50,50),(255,000,255),2)
 		cv2.imshow('Video',frame)
 	cap.release()
 	cv2.destroyWindow('Video')
-
-def logTimestamp():
-	queryText = 'INSERT INTO log (timestamp) VALUES ("' + time.asctime(time.localtime()) + '");'
-	c.execute(queryText)
-	conn.commit()
 
 def retrieveFromDatabase(value, camera):
 	# Get value from database
