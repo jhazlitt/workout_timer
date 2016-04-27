@@ -2,6 +2,8 @@ import math
 import os
 import time
 
+beginningTime = time.time()
+
 count = 0 
 with open('click_timer_score.txt') as f:
 	lines = f.readlines()
@@ -29,3 +31,6 @@ while True:
 			f.write(str(count))
 		break
 	os.system('clear')
+
+totalTime = (time.time() - beginningTime) / 60
+print 'Total time: ' + str(totalTime)
