@@ -15,7 +15,7 @@ while True:
 	userInput = raw_input()
 	if (userInput == ''):
 		count = count + 1
-		if (int(count) > int(highScore)):
+		if (int(count) > int(highScore)) or (int(count) == 30):
 			os.system('mpg123 tada.mp3')
 		os.system('mpg123 party_horn.mp3')
 		startTime = time.time()
@@ -32,5 +32,5 @@ while True:
 		break
 	os.system('clear')
 
-totalTime = (time.time() - beginningTime) / 60
-print 'Total time: ' + str(totalTime)
+totalTime = round((time.time() - beginningTime) / 60, 2)
+print 'Total time: ' + str(totalTime) + ' minutes.'
