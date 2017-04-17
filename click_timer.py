@@ -21,9 +21,10 @@ while True:
 		startTime = time.time()
 
 		os.system('clear')
-		print ('60 second timer running')
+		seconds = 90
+		print ('' + str(seconds) + ' second timer running')
 		while True:
-			if (time.time() - startTime >= 60):
+			if (time.time() - startTime >= seconds):
 				os.system('aplay doorbell.wav')
 				break
 	elif (userInput == 'q'):
