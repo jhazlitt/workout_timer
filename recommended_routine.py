@@ -11,7 +11,7 @@ for line in lines:
 	os.system('mpg123 party_horn.mp3')
 	os.system('clear')
 	print(str(secondWait) + ' second break.')
-	time.sleep(90)	
+	time.sleep(secondWait)	
 	os.system('aplay doorbell.wav')
 	os.system('clear')
 
