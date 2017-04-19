@@ -8,7 +8,7 @@ lines = open('workout_list.txt')
 for line in lines:
 	print line
 	userInput = raw_input('Continue?')
-	os.system('mpg123 party_horn.mp3')
+	#os.system('mpg123 party_horn.mp3')
 	os.system('clear')
 	print(str(secondWait) + ' second break.')
 	time.sleep(secondWait)	
