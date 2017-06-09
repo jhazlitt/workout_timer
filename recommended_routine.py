@@ -1,6 +1,13 @@
 import os
 import time
 
+def timer(waitTime):
+	while (waitTime > 0):
+		os.system('clear')
+		print waitTime
+		waitTime -= 1
+		time.sleep(1)
+
 secondWait = 90
 
 lines = open('workout_list.txt')
@@ -10,8 +17,7 @@ for line in lines:
 	userInput = raw_input('Continue?')
 	#os.system('mpg123 party_horn.mp3')
 	os.system('clear')
-	print(str(secondWait) + ' second break.')
-	time.sleep(secondWait)	
+	timer(secondWait)	
 	os.system('aplay doorbell.wav')
 	os.system('clear')
 
