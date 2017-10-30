@@ -29,7 +29,6 @@ for line in lines:
 	if userInput == 'skip':
 		os.system('clear')
 		continue
-	#os.system('mpg123 party_horn.mp3')
 	os.system('clear')
 	timer(secondWait)	
 	playSound()
