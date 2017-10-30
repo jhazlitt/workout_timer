@@ -1,6 +1,12 @@
 import os
 import time
 
+def clearScreen():
+	os.system('clear')
+	
+def playSound():
+	os.system('aplay doorbell.wav')
+
 def timer(waitTime):
 	while (waitTime > 0):
 		os.system('clear')
@@ -9,6 +15,11 @@ def timer(waitTime):
 		time.sleep(1)
 
 secondWait = 90
+
+# Pause for 90 seconds before beginning the workout
+timer(secondWait)
+playSound()
+clearScreen()
 
 lines = open('workout_list.txt')
 
@@ -21,8 +32,8 @@ for line in lines:
 	#os.system('mpg123 party_horn.mp3')
 	os.system('clear')
 	timer(secondWait)	
-	os.system('aplay doorbell.wav')
-	os.system('clear')
+	playSound
+	clearScreen()
 
 os.system('mpg123 tada.mp3')
 os.system('clear')
