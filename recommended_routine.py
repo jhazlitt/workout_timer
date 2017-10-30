@@ -32,7 +32,7 @@ for line in lines:
 	#os.system('mpg123 party_horn.mp3')
 	os.system('clear')
 	timer(secondWait)	
-	playSound
+	playSound()
 	clearScreen()
 
 os.system('mpg123 tada.mp3')
