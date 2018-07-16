@@ -5,7 +5,7 @@ def clearScreen():
 	os.system('clear')
 	
 def playSound():
-	os.system('aplay doorbell.wav')
+	os.system('mpg123 unconvinced.mp3')
 
 def timer(waitTime):
 	while (waitTime > 0):
