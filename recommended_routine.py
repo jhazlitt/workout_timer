@@ -17,6 +17,7 @@ def timer(waitTime):
 secondWait = 90
 
 # Pause for 90 seconds before beginning the workout
+continuousMode = raw_input('Continuous mode?')
 timer(secondWait)
 playSound()
 clearScreen()
@@ -25,11 +26,12 @@ lines = open('workout_list.txt')
 
 for line in lines:
 	print line
-	userInput = raw_input('Continue?')
-	if userInput == 'skip':
+	if (continuousMode != 'y'):
+		userInput = raw_input('Continue?')
+		if userInput == 'skip':
+			os.system('clear')
+			continue
 		os.system('clear')
-		continue
-	os.system('clear')
 	timer(secondWait)	
 	playSound()
 	clearScreen()
